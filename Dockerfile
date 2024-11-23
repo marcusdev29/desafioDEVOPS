@@ -1,18 +1,20 @@
-# Usando uma imagem base do Python
+# Imagem base
 FROM python:3.10-slim
 
-# Define o diretório de trabalho
-WORKDIR /usr/src/app
+# Diretório de trabalho
+WORKDIR /app
 
-# Copia os arquivos necessários
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copia o restante dos arquivos
+# Copiar arquivos para o contêiner
 COPY . .
 
-# Expondo a porta para o Render
-EXPOSE 8080
+# Instalar dependências
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Define o comando para rodar o aplicativo
-CMD ["python", "-m", "http.server", "8080"]
+# Configurar o PYTHONPATH
+ENV PYTHONPATH=/app
+
+# Expor a porta da aplicação
+EXPOSE 3000
+
+# Comando para iniciar o app
+CMD ["python", "app/main.py"]
